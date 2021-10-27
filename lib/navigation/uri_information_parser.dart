@@ -4,12 +4,10 @@ import 'package:flutter/widgets.dart';
 
 import 'uri_navigation_state.dart';
 
-class UrlHandlerInformationParser
-    extends RouteInformationParser<NavigationState> {
+class UrlHandlerInformationParser extends RouteInformationParser<NavigationState> {
   // Url to navigation state
   @override
-  Future<NavigationState> parseRouteInformation(
-      RouteInformation routeInformation) async {
+  Future<NavigationState> parseRouteInformation(RouteInformation routeInformation) async {
     return NavigationState(routeInformation.location!.substring(1));
   }
 

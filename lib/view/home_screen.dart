@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'package:bmec_flutter_web_demo/utils/common_widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.urlData, this.getValue}) : super(key: key);
   final String? urlData;
@@ -14,8 +13,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String? userKay = '';
-  String? siteKay = '';
+  TextEditingController userKay = TextEditingController();
+  TextEditingController siteKay = TextEditingController();
 
   @override
   void initState() {
@@ -23,13 +22,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getParams() {
+    /// get value from url
     var uri = Uri.dataFromString(window.location.href);
     print("getCurrentUri -------- > $uri");
     Map<String, String> params = uri.queryParameters;
-    userKay = params['userkey'];
-    siteKay = params['siteKey'];
-    setState(() {
-    });
+
+    ///set the value to textfield
+    userKay.text = params['userkey'] ?? "";
+    siteKay.text = params['siteKey'] ?? "";
+    setState(() {});
     print('userkeys =======>  ${userKay}');
     print('siteKey =======>  ${siteKay}');
     /*if (userKay == null) {
@@ -49,27 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            customTextField(
-                readOnly: true,
-                hintText: userKay == null
-                    ? "UserKay is null"
-                    : "UserKay : " + userKay!),
+            customTextField(readOnly: false, controller: userKay),
             const SizedBox(
               height: 10,
             ),
-            customTextField(
-                readOnly: true,
-                hintText: siteKay == null
-                    ? "SiteKay is null"
-                    : "SiteKay : " + siteKay!),
+            customTextField(readOnly: false, controller: siteKay),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          //get value from URL
           widget.getValue!();
-          await Future.delayed(const Duration(milliseconds: 1000), (){getParams();});
-
+          await Future.delayed(const Duration(milliseconds: 1000), () {
+            getParams();
+          });
         },
         tooltip: 'Counter',
         child: Icon(Icons.add),
